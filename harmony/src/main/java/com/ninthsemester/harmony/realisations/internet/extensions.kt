@@ -18,10 +18,16 @@ fun getCurrentNetworkInfoState(context: Context) : Harmony.ConnectionInfo {
         Harmony.State.DISCONNECTED
     }
 
+    val type = when(activeNetworkInfo.type) {
+        ConnectivityManager.TYPE_WIFI -> Harmony.Connection.TYPE_WIFI
+        ConnectivityManager.TYPE_MOBILE -> Harmony.Connection.TYPE_4G
+        else -> Harmony.Connection.NO_IDEA
+    }
+
     return Harmony.ConnectionInfo(
             activeNetworkInfo.isConnected,
             status,
-            activeNetworkInfo.type)
+            type)
 }
 
 

@@ -24,7 +24,7 @@ class HarmonyImpl(private val context: Context) : HarmonyBase() {
         override fun onLost(network: Network?) {
             super.onLost(network)
             subscribers.forEach {
-                it.value.onConnectionChanged(Harmony.State.DISCONNECTED, false)
+                it.value.onConnectionChanged(Harmony.ConnectionInfo(false, Harmony.State.DISCONNECTED), false)
             }
 
             Log.d(TAG, "onLost : "+network.toString())
@@ -32,16 +32,19 @@ class HarmonyImpl(private val context: Context) : HarmonyBase() {
 
         override fun onUnavailable() {
             super.onUnavailable()
+            val info = getCurrentNetworkInfoState(context)
             subscribers.forEach {
-                it.value.onConnectionChanged(Harmony.State.CONNECTED, true)
+
+                it.value.onConnectionChanged(info, true)
             }
             Log.d(TAG, "onUnAvailable : ")
         }
 
         override fun onAvailable(network: Network?) {
             super.onAvailable(network)
+            val info = getCurrentNetworkInfoState(context)
             subscribers.forEach {
-                it.value.onConnectionChanged(Harmony.State.CONNECTED, true)
+                it.value.onConnectionChanged(info, true)
             }
 
             Log.d(TAG, "onAvailable : "+network.toString())
@@ -80,8 +83,8 @@ class HarmonyImpl(private val context: Context) : HarmonyBase() {
         return false
     }
 
-    override fun getConnectionState(): Harmony.State {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getConnectionInfo(): Harmony.ConnectionInfo {
+     return getCurrentNetworkInfoState(context)
     }
 
 

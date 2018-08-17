@@ -15,12 +15,13 @@ interface Harmony {
     enum class Connection {
         TYPE_WIFI,
         TYPE_4G,
-        TYPE_3G
+        TYPE_3G,
+        NO_IDEA
     }
 
     interface ConnectionListener {
         fun onConnectionChanged(
-                currentState: State,
+                connectionInfo: ConnectionInfo,
                 isConnected: Boolean,
                 additionalInfo: Any? = null)
     }
@@ -28,6 +29,6 @@ interface Harmony {
     data class ConnectionInfo (
             val isConnected: Boolean,
             val state: State ?= null,
-            val connectionType: Int ?= null)
+            val connectionType: Connection ?= null)
 
 }
